@@ -1,74 +1,74 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Estoque from "./pages/Estoque";
 import ListaPreco from "./pages/Listapreco";
 import AcessoRestrito from "./pages/AcessoRestrito";
 import Historico from "./pages/Historico";
 import LoginRestrito from "./pages/LoginRestrito";
-import "./App.css";
+import logo from "./assets/react.svg";
 
-function RotaProtegida({ children }) {
-  const autenticado = localStorage.getItem("acessoLiberado") === "true";
-  return autenticado ? children : <Navigate to="/acesso-restrito" />;
+function Protegido({ children }) {
+  const acesso = localStorage.getItem("acessoLiberado");
+  const navigate = useNavigate();
+
+  if (acesso !== "true") {
+    navigate("/login");
+    return null;
+  }
+
+  return children;
 }
 
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 flex flex-col">
-        {/* Cabeçalho */}
-        <header className="bg-white shadow px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <img src="/logo.png" alt="Logo RW" className="w-12 h-12 object-contain" />
-            <Link to="/" className="text-2xl font-bold text-gray-800">
-              GESTÃO RW INSUMOS
-            </Link>
+      <div className="min-h-screen bg-gray-100">
+        {/* Header */}
+        <header className="bg-white shadow p-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
+            <h1 className="text-xl font-bold text-gray-800">GESTÃO RW INSUMOS</h1>
           </div>
         </header>
 
-        {/* Conteúdo principal */}
-        <main className="flex-1 p-6">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <div className="flex flex-col items-center justify-center gap-8 mt-10">
-                  <Link
-                    to="/estoque"
-                    className="text-center bg-green-600 text-white px-6 py-3 rounded-xl shadow hover:bg-green-700 transition text-lg w-64"
-                  >
-                    📦 Estoque
-                  </Link>
-                  <Link
-                    to="/listapreco"
-                    className="text-center bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition text-lg w-64"
-                  >
-                    💰 Lista de Preço
-                  </Link>
-                  <Link
-                    to="/acesso-restrito"
-                    className="text-center bg-red-600 text-white px-6 py-3 rounded-xl shadow hover:bg-red-700 transition text-lg w-64"
-                  >
-                    🔒 Acesso Restrito
-                  </Link>
-                </div>
-              }
-            />
-            <Route path="/estoque" element={<Estoque />} />
-            <Route path="/listapreco" element={<ListaPreco />} />
-            <Route path="/acesso-restrito" element={<LoginRestrito />} />
-            <Route
-              path="/restrito"
-              element={
-                <RotaProtegida>
-                  <AcessoRestrito />
-                </RotaProtegida>
-              }
-            />
-            <Route path="/historico" element={<Historico />} />
-          </Routes>
+        {/* Navegação principal */}
+        <main className="p-6 flex justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <Card icon="📦" title="Estoque" href="/estoque" />
+            <Card icon="💰" title="Lista de Preço" href="/listapreco" />
+            <Card icon="🔐" title="Acesso Restrito" href="/login" />
+            <Card icon="📚" title="Histórico" href="/historico" />
+          </div>
         </main>
+
+        {/* Rotas */}
+        <Routes>
+          <Route path="/estoque" element={<Estoque />} />
+          <Route path="/listapreco" element={<ListaPreco />} />
+          <Route path="/login" element={<LoginRestrito />} />
+          <Route
+            path="/restrito"
+            element={
+              <Protegido>
+                <AcessoRestrito />
+              </Protegido>
+            }
+          />
+          <Route path="/historico" element={<Historico />} />
+        </Routes>
       </div>
     </Router>
+  );
+}
+
+function Card({ icon, title, href }) {
+  return (
+    <a
+      href={href}
+      className="bg-white rounded-lg shadow-md hover:shadow-xl transition p-6 flex flex-col items-center text-center w-40"
+    >
+      <span className="text-4xl mb-2">{icon}</span>
+      <span className="text-sm font-semibold text-gray-700">{title}</span>
+    </a>
   );
 }

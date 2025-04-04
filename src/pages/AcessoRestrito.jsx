@@ -8,10 +8,10 @@ export default function AcessoRestrito() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const autorizado = localStorage.getItem("acessoRestrito");
-    console.log("Acesso permitido?", autorizado); // <- linha de depuração
+    const autorizado = localStorage.getItem("acessoLiberado");
+    console.log("Acesso permitido?", autorizado);
 
-    if (autorizado !== "ok") {
+    if (autorizado !== "true") {
       navigate("/login");
     }
   }, [navigate]);
