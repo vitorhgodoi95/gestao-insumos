@@ -1,10 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import Estoque from "./pages/Estoque";
-import ListaPreco from "./pages/Listapreco"; // <- Correto com "p" minúsculo
+import ListaPreco from "./pages/Listapreco";
 import AcessoRestrito from "./pages/AcessoRestrito";
 import Historico from "./pages/Historico";
+import LoginRestrito from "./pages/LoginRestrito";
 import "./App.css";
+
+function RotaProtegida({ children }) {
+  const autenticado = localStorage.getItem("acessoLiberado") === "true";
+  return autenticado ? children : <Navigate to="/acesso-restrito" />;
+}
 
 export default function App() {
   return (
@@ -50,7 +56,15 @@ export default function App() {
             />
             <Route path="/estoque" element={<Estoque />} />
             <Route path="/listapreco" element={<ListaPreco />} />
-            <Route path="/acesso-restrito" element={<AcessoRestrito />} />
+            <Route path="/acesso-restrito" element={<LoginRestrito />} />
+            <Route
+              path="/restrito"
+              element={
+                <RotaProtegida>
+                  <AcessoRestrito />
+                </RotaProtegida>
+              }
+            />
             <Route path="/historico" element={<Historico />} />
           </Routes>
         </main>
