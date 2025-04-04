@@ -10,7 +10,7 @@ export default function LoginRestrito() {
 
   const handleLogin = () => {
     if (senha === senhaCorreta) {
-      localStorage.setItem("acessoRestrito", "ok");
+      localStorage.setItem("acessoLiberado", "true");
       navigate("/restrito");
     } else {
       setErro("Senha incorreta. Tente novamente.");
