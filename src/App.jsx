@@ -22,15 +22,13 @@ export default function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
-        {/* Header */}
         <header className="bg-white shadow p-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.location.href = "/"}>
             <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
             <h1 className="text-xl font-bold text-gray-800">GESTÃO RW INSUMOS</h1>
           </div>
         </header>
 
-        {/* Navegação principal */}
         <main className="p-6 flex justify-center">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Card icon="📦" title="Estoque" href="/estoque" />
@@ -40,7 +38,6 @@ export default function App() {
           </div>
         </main>
 
-        {/* Rotas */}
         <Routes>
           <Route path="/estoque" element={<Estoque />} />
           <Route path="/listapreco" element={<ListaPreco />} />

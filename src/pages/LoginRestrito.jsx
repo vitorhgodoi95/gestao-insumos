@@ -6,7 +6,7 @@ export default function LoginRestrito() {
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
 
-  const senhaCorreta = "insumos2024"; // Altere essa senha depois
+  const senhaCorreta = "insumos2024";
 
   const handleLogin = () => {
     if (senha === senhaCorreta) {
