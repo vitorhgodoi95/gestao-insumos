@@ -7,15 +7,17 @@ import Historico from "./pages/Historico";
 import LoginRestrito from "./pages/LoginRestrito";
 
 function Protegido({ children }) {
-  const acesso = localStorage.getItem("acessoLiberado");
   const navigate = useNavigate();
 
-  if (acesso !== "true") {
-    navigate("/login");
-    return null;
-  }
+  useEffect(() => {
+    const acesso = localStorage.getItem("acessoLiberado");
+    if (acesso !== "true") {
+      navigate("/login");
+    }
+  }, [navigate]);
 
-  return children;
+  const acesso = localStorage.getItem("acessoLiberado");
+  return acesso === "true" ? children : null;
 }
 
 export default function App() {
